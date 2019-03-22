@@ -37,14 +37,10 @@
 		</h:selectOneMenu>
 		<h:outputText/>
 
-		Context:
-		<h:selectOneMenu value="#{todoHome.instance.context}"
-			converter="#{contextConverter}">
-			<f:selectItem itemLabel="Select One" itemValue="" />
-			<f:selectItems value="#{contextList.findAll()}"
-				var="i" itemLabel="#{i}" itemValue="#{i}"/>
-		</h:selectOneMenu>
-		<h:outputText/>
+		Details:
+		<h:inputTextarea id="descrTF" value="#{todoHome.instance.description}"
+			rows="5" cols="70"/>
+		<h:message id='descrMessage' for='descrTF'/>
 
 		Priority:
 		<h:selectOneMenu value="#{todoHome.instance.priority}">
@@ -53,10 +49,23 @@
 		</h:selectOneMenu>
 		<h:outputText/>
 		
-		Details:
-		<h:inputTextarea id="descrTF" value="#{todoHome.instance.description}"
-			rows="5" cols="70"/>
-		<h:message id='descrMessage' for='descrTF'/>
+		<h:outputText value="Project: What it is part of" />
+		<h:selectOneMenu value="#{todoHome.instance.project}"
+			converter="#{projectConverter}">
+			<f:selectItem itemLabel="Select One" itemValue="" />
+			<f:selectItems value="#{projectList.findAll()}"
+				var="i" itemLabel="#{i}" itemValue="#{i}"/>
+		</h:selectOneMenu>
+		<h:outputText/>
+
+		<h:outputText value="Context: Where you can work on it" />
+		<h:selectOneMenu value="#{todoHome.instance.context}"
+			converter="#{contextConverter}">
+			<f:selectItem itemLabel="Select One" itemValue="" />
+			<f:selectItems value="#{contextList.findAll()}"
+				var="i" itemLabel="#{i}" itemValue="#{i}"/>
+		</h:selectOneMenu>
+		<h:outputText/>
 
 		</h:panelGrid>
 	</p:panel>
