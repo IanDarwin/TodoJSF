@@ -23,7 +23,7 @@
 
 	<!-- Security roles used by this web application -->
 	<security-role>
-		<role-name>club_exec</role-name>
+		<role-name>todoist</role-name>
 	</security-role>
 
 	<login-config>
@@ -43,7 +43,7 @@
 			<url-pattern>*.xhtml</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
-			<role-name>club_exec</role-name>
+			<role-name>todoist</role-name>
 		</auth-constraint>
 		<!--
 		<user-data-constraint>
