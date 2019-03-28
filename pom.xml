@@ -93,6 +93,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.metawidget.modules</groupId>
+			<artifactId>metawidget-core</artifactId>
+			<version>4.2</version>
+		</dependency>
+
 		<!-- OmniFaces utility add-on -->
 		<dependency>
 			<groupId>org.omnifaces</groupId>
@@ -106,7 +112,7 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 			<exclusions>
-				<exclusion>  <!-- declare the exclusion here -->
+				<exclusion> <!-- declare the exclusion here -->
 					<groupId>xml-apis</groupId>
 					<artifactId>xml-apis</artifactId>
 				</exclusion>
