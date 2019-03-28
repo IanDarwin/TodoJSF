@@ -100,6 +100,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.metawidget.modules.faces</groupId>
+			<artifactId>metawidget-faces</artifactId>
+			<version>4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metawidget.modules.faces</groupId>
+			<artifactId>metawidget-facesannotation</artifactId>
+			<version>4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metawidget.modules.faces</groupId>
 			<artifactId>metawidget-primefaces</artifactId>
 			<version>4.2</version>
 		</dependency>

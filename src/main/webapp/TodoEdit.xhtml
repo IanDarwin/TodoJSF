@@ -4,6 +4,7 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:m="http://metawidget.org/faces"
 	xmlns:p="http://primefaces.org/ui"
 	template="/template/template.xhtml">
 
@@ -16,63 +17,15 @@
 </h:head>
 
 <ui:define name="body">
-
-	<h:form id="todoForm">
-	<p:panel>
-		<f:facet name="header">Todo Edit</f:facet>
-		<h:panelGrid columns='3'>
 		
-		Id:
-		<h:outputText id="idTF" value="#{todoHome.instance.serverId}"/>
-		<h:message id='idMessage' for='idTF'/>
-		
-		Name:
-		<h:inputText id="nameTF" value="#{todoHome.instance.name}" required='true' size='70'/>
-		<h:message id='nameMessage' for='nameTF'/>
-
-		Status:
-		<h:selectOneMenu value="#{todoHome.instance.status}">
-			<f:selectItems value="#{factories.statuses}"
-						 var="i" label="#{i}"/>
-		</h:selectOneMenu>
-		<h:outputText/>
-
-		Details:
-		<h:inputTextarea id="descrTF" value="#{todoHome.instance.description}"
-			rows="5" cols="70"/>
-		<h:message id='descrMessage' for='descrTF'/>
-
-		Priority:
-		<h:selectOneMenu value="#{todoHome.instance.priority}">
-			<f:selectItems value="#{factories.priorities}"
-						 var="i" label="#{i}"/>
-		</h:selectOneMenu>
-		<h:outputText/>
-		
-		<h:outputText value="Project: What it is part of" />
-		<h:selectOneMenu value="#{todoHome.instance.project}"
-			converter="#{projectConverter}">
-			<f:selectItem itemLabel="Select One" itemValue="" />
-			<f:selectItems value="#{projectList.findAll()}"
-				var="i" itemLabel="#{i}" itemValue="#{i}"/>
-		</h:selectOneMenu>
-		<h:outputText/>
-
-		<h:outputText value="Context: Where you can work on it" />
-		<h:selectOneMenu value="#{todoHome.instance.context}"
-			converter="#{contextConverter}">
-			<f:selectItem itemLabel="Select One" itemValue="" />
-			<f:selectItems value="#{contextList.findAll()}"
-				var="i" itemLabel="#{i}" itemValue="#{i}"/>
-		</h:selectOneMenu>
-		<h:outputText/>
-
-		</h:panelGrid>
-	</p:panel>
-
-	<p:commandButton value="Save" action="#{todoHome.update}" ajax='false'/>
+	<h:form id="fred">
+		<m:metawidget value="#{todoHome.instance}" inspectFromParent="true">
+			<f:facet name="header">Todo Edit</f:facet>
+		</m:metawidget>
 	</h:form>
-	<h:form>
+
+	<h:form id="buttons">
+	<p:commandButton value="Save" action="#{todoHome.update}" ajax='false'/>
 	<!-- In their own form to avoid hanging on validation -->
 	<p:commandButton value="Delete" action="#{todoHome.remove}">
         <p:confirm header="Confirm Deletion" message="Really delete?" icon="ui-icon-alert" />
