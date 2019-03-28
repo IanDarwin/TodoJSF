@@ -1,8 +1,5 @@
 package model;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.ejb.Singleton;
 import javax.inject.Named;
 
