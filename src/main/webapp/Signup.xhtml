@@ -1,0 +1,210 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="template/template.xhtml">
+
+<h:head>
+</h:head>
+
+<ui:define name="title">Signup: Welcome Aboard (not operational yet)</ui:define>
+
+<ui:define name="body">
+	<p:tooltip />
+	<h:form id="account" styleClass="edit" enctype="multipart/form-data">
+		<p:messages id="messages" showDetail="true" closable="true">
+			<!--  p:autoUpdate / -->
+		</p:messages>
+		<p:panel>
+		<f:facet name="header">Why Sign up?</f:facet>
+		<p>
+		You need to sign up if you plan to keep your todo list online here.<br/>
+		You <b>can not find out anybody's email address</b> or any other personal
+		information by signing up.<br/>
+		You <b>can not</b> send email to random victims around the Internet from your account here.<br/>
+		You <b>can not display any links</b> to your sites or to agencies evilly paying
+		you to plant link SPAM around the Web.
+		</p>
+		</p:panel>
+
+		<p:panelGrid columns='3' label="Sign up">
+
+				<p:outputLabel for="firstName" value="First Name"/>
+				<p:inputText id="firstName"
+					required="true"
+						 size="40"
+					maxlength="40"
+						value="#{signupAction.firstName}">
+				</p:inputText>
+				<h:message for="firstName"/>
+
+				<p:outputLabel for="lastName" value="Last Name"/>
+				<p:inputText id="lastName"
+					 required="true"
+						 size="40"
+					maxlength="40"
+						value="#{signupAction.lastName}">
+				</p:inputText>
+				<h:message for="lastName"/>
+
+				<p:outputLabel for="userName" value="Requested Username"/>
+				<p:inputText id="userName"
+					 required="true"
+					validate="true"
+						 size="12"
+					maxlength="12"
+						value="#{signupAction.userName}">
+					<p:ajax
+						listener="#{signupAction.verifyUsernameIsAvailable()}"
+						event="blur" update="userNameMessage"/>
+				</p:inputText>
+				<h:message id="userNameMessage" for="userName"/>
+
+				<p:outputLabel for="email" value="Email"/>
+				<p:inputText id="email" prototype="user@host.domain"
+					 required="true"
+					validate="true"
+						 size="40"
+					maxlength="255"
+						value="#{signupAction.email}">
+					<f:ajax
+						listener="#{signupAction.verifyEmailIsAvailable()}"
+						event="blur" 
+						render="emailMessage"/>
+				</p:inputText>
+				<p:message id="emailMessage" for="email" display="icon"/>
+
+				<p:outputLabel for="twitId" value="Twitter Name: @"/>
+				<p:inputText id="twitId"
+					 required="false"
+						 size="40"
+					maxlength="255"
+						value="#{personHome.instance.twitterName}">
+				</p:inputText>
+				<h:message for="twitId"/>
+
+				<p:outputLabel for="website" value="Web Site"/>
+				<p:inputText id="website"
+					 required="false"
+						 size="80"
+					maxlength="255"
+						value="#{personHome.instance.webSite}">
+				</p:inputText>
+				<h:message for="website"/>
+
+				<p:outputLabel for="address1" value="Address"/>
+				<p:inputText id="address1"
+					 required="true"
+						 size="80"
+					maxlength="255"
+						value="#{personHome.instance.address1}">
+				</p:inputText>
+				<h:message for="address1"/>
+
+				<p:outputLabel for="address2" value="Address cont'd"/>
+				<p:inputText id="address2"
+					 required="false"
+						 size="80"
+					maxlength="255"
+						value="#{personHome.instance.address2}">
+				</p:inputText>
+				<h:message for="address2"/>
+
+				<p:outputLabel for="city" value="City/Town"/>
+				<p:inputText id="city"
+					 required="true"
+						 size="80"
+					maxlength="255"
+						value="#{personHome.instance.city}">
+				</p:inputText>
+				<h:message for="city"/>
+
+				<p:outputLabel for="country" value="Country"/>
+				<h:selectOneMenu id="country" value="#{personHome.instance.country}" required="true">
+					<f:selectItems var="country" value="#{countries}"
+							label="#{country.longName}" noSelectionLabel="-- Select --"/>
+					<f:ajax event="change" render="provinceField" ajaxSingle="true"/>
+				</h:selectOneMenu>
+				<h:message for="country"/>
+
+				<p:outputLabel for="province" value="State/Province"/>
+				<h:selectOneMenu id="province" value="#{personHome.instance.province}"
+						required="true">
+					<f:selectItems var="prov" value="#{canadianProvinces}"
+						itemValue="#{prov.longName}" label="#{prov.longName}"
+						rendered="#{personHome.instance.country == 'CA'}"
+						noSelectionLabel="-- Select --"/>
+					<f:selectItems var="state" value="#{usStates}"
+						itemValue="#{state.longName}" label="#{state.longName}"
+						rendered="#{personHome.instance.country == 'US'}"
+						noSelectionLabel="-- Select --"/>
+				</h:selectOneMenu>
+				<h:message for="province"/>
+
+				<p:outputLabel for="postCode" value="PostCode/Zip Code"/>
+				<p:inputText id="postCode"
+					 required="true"
+						 size="12"
+					maxlength="255"
+						value="#{personHome.instance.postCode}">
+				</p:inputText>
+				<h:message for="postCode"/>
+
+	</p:panelGrid>
+
+	<!-- p:captcha label="Captcha" / -->
+
+	<div style="clear:both;">
+	<span class="required">*</span> required fields
+	<br/>
+	Twitter name is optional and will be used e.g., in tweets about your new Recipes;
+	<br/>
+	Web site is optional and may be displayed in your profile, visible to logged-in users only.
+	</div>
+
+	<p:panel>
+	By signing up I agree:
+	
+	<ul>
+	<li><b>I understand that I do not need to sign up just to view site content.</b></li>
+	<li><b>I understand that I cannot place public links on any pages
+		except with moderator approval.</b></li>
+	<li>
+		<h:selectBooleanCheckbox id="acceptedLicense" required="true"
+			value="#{personHome.instance.acceptedLicense}"/>
+		I accept the #{' '}
+		<h:link view="/TandC.xhtml" value="site Terms and Conditions"/>.
+	</li>
+	<li>
+		<h:selectBooleanCheckbox id="acceptedAgeLimit" required="true"
+			value="#{personHome.instance.minimumAge}"/>
+		I hereby warrant that I am at least 16 years of age.</li>
+	<li>
+		<h:selectBooleanCheckbox id="acceptedMailings" required="true"
+			value="#{personHome.instance.siteNotify}"/>
+		I agree to receive notices about site news and other relevant information,
+		which I can control in my profile page after signup.</li>
+	</ul>
+
+	</p:panel>
+
+	<div class="actionButtons">
+
+		<p:commandButton id="save"
+			icon="ui-icon-check"
+			value="Sign up"
+			action="#{signupAction.save}"/>
+
+		<p:commandButton id="cancelEdit"
+			value="Cancel"
+		 propagation="end"
+				view="/home.xhtml"/>
+
+	</div>
+	</h:form>
+
+</ui:define>
+</ui:composition>

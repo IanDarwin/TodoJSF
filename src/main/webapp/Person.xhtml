@@ -1,0 +1,75 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/template/template.xhtml">
+
+<h:head>
+<f:metadata>
+	<f:event type="preRenderView" listener='#{personHome.wire(request.getParameter("personId"))}'/>
+</f:metadata>
+</h:head>
+
+<ui:define name="title">Person Details</ui:define>
+<ui:define name="body">
+
+    <p:panel>
+        <f:facet name="header">Person Details for #{personHome.instance.userName}</f:facet>
+
+        <p:panel
+        	rendered="#{!personHome.instance.loginAllowed}">
+            <f:facet name="header">Caution</f:facet>
+            <h:outputText value="Caution: this user is not currently allowed to login, and will not receive email notifications."/>
+        </p:panel>
+
+		<p:panelGrid columns='2'>
+        
+            <h:outputText value="Username"/>
+            <h:outputText value="#{personHome.instance.userName}"/>
+
+            <h:outputText value="Name"/>
+			<ui:fragment>
+				<h:outputText value="#{personHome.instance.firstname}"/>
+				#{' '}
+				<h:outputText value="#{personHome.instance.lastname}"/>
+			</ui:fragment>
+
+            <h:outputText value="Web Site"/>
+            <h:outputText value="#{personHome.instance.webSite}"/>
+
+            <h:outputText value="Email"/>
+            <h:outputText value="(protected)"/>
+
+            <h:outputText value="Location"/>
+            <h:outputText value="(protected)"/>
+
+            <h:outputText value="Member Since"/>
+            <h:outputText value="#{personHome.instance.joined}"/>
+
+            <h:outputText value="Last Seen"/>
+            <h:outputText value="#{personHome.instance.lastLogin}"/>
+
+		</p:panelGrid>
+
+        <div style="clear:both"/>
+
+    </p:panel>
+
+    <div class="actionButtons">
+
+        <p:button view="/PersonEdit.web"
+                    id="edit"
+                 value="Edit"/>
+
+        <p:button view="/#{empty personFrom ? 'PersonList' : personFrom}.web"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,150 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/template/template.xhtml">
+
+<h:head>
+<f:metadata>
+	<f:event type="preRenderView" listener='#{personHome.wire(request.getParameter("personId"))}'/>
+</f:metadata>
+</h:head>
+
+<ui:define name="title">Edit Person Details</ui:define>
+<ui:define name="body">
+
+    <p:panel>
+        <f:facet name="header">Edit Person Details for #{personHome.instance.userName}</f:facet>
+
+        <p:panel rendered="#{!personHome.instance.loginAllowed}">
+            <f:facet name="header">Caution</f:facet>
+            <h:outputText value="Caution: this user is not currently allowed to login, and will not receive email notifications."/>
+        </p:panel>
+
+		<p:panelGrid columns='2'>
+        
+            <h:outputText value="Username"/>
+            <h:inputText value="#{personHome.instance.userName}"/>
+
+            <h:outputText value="First Name"/>
+			<h:inputText value="#{personHome.instance.firstname}"/>
+
+            <h:outputText value="Last Name"/>
+			<h:inputText value="#{personHome.instance.lastname}"/>
+
+            <h:outputText value="Web Site"/>
+            <h:inputText value="#{personHome.instance.webSite}"/>
+
+            <h:outputText value="Email"/>
+            <h:inputText value="#{personHome.instance.email}"/>
+
+            <h:outputText value="Location"/>
+            <h:outputText value="(protected)"/>
+
+            <h:outputText value="WYSIWYG Editing?"/>
+            <h:selectBooleanCheckbox value="#{personHome.instance.wysiwygEdit}"/>
+
+            <h:outputText value="Login Allowed? &lt;b>N.B.&lt;/b>: Can only be set back to true using SQL" escape="true"/>
+            <h:selectBooleanCheckbox value="#{personHome.instance.loginAllowed}"/>
+
+            <h:outputText value="Site Notice Email?  (Email general notices about the site)"/>
+            <h:selectBooleanCheckbox value="#{personHome.instance.siteNotify}"/>
+
+            <h:outputText value="Email Comments?  (Email me when somebody Comments on one of my Recipes)"/>
+            <h:selectBooleanCheckbox value="#{personHome.instance.commentNotify}"/>
+
+            <h:outputText value="Email Edits?  (Email me when an Editor changes one of my Recipes)"/>
+            <h:selectBooleanCheckbox value="#{personHome.instance.editNotify}"/>
+
+            <h:outputText value="Last Seen"/>
+            <h:outputText value="#{personHome.instance.lastLogin}"/>
+
+		</p:panelGrid>
+
+        <div style="clear:both"/>
+
+    </p:panel>
+
+    <div class="actionButtons">
+
+		<p:commandButton value="Save" id="save"
+			actionListener="#{personHome.update()}"
+			ajax="false" icon="ui-icon-disk"/>
+
+        <p:button view="/#{empty personFrom ? 'PersonList' : personFrom}.web"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <p:tabView switchType="ajax">
+
+    <p:tab title="Recipes Contributed">
+		<h:form styleClass="association" id="recipesChildren">
+
+        <h:outputText value="This person hasn't contributed any (approved) recipes yet."
+                   rendered="#{empty personHome.instance.recipes}"/>
+
+        <p:dataTable value="#{personHome.instance.recipes}"
+                       var="_recipe"
+                        id="recipesTable">
+            <p:column sortBy="#{_recipe.id}" width="7%">
+                <f:facet name="header">Id</f:facet>
+                <h:outputText value="#{_recipe.id}"/>
+            </p:column>
+            <p:column sortBy="#{_recipe.title}">
+                <f:facet name="header">Title</f:facet>
+                <h:outputLink value="/recipe/#{_recipe.id}.html">
+                    <f:param name="recipeFrom" value="Person"/>
+                    #{_recipe.title}
+                </h:outputLink>
+            </p:column>
+            <p:column sortBy="#{_recipe.problem}">
+                <f:facet name="header">Problem</f:facet>
+                <h:outputText value="#{_recipe.problem}"/>
+            </p:column>
+        </p:dataTable>
+
+    </h:form>
+    </p:tab>
+
+    <p:tab title="Comments">
+		<h:form styleClass="association" id="commentsChildren">
+
+        <h:outputText value="This person hasn't made any (approved) comments yet."
+                   rendered="#{empty personHome.instance.comments}"/>
+
+        <p:dataTable value="#{personHome.instance.comments}"
+                       var="_comment"
+                        id="commentsTable">
+            <p:column sortBy="#{_comment.id}" width="7%">
+                <f:facet name="header">Id</f:facet>
+                <h:outputText value="#{_comment.id}"/>
+            </p:column>
+            <p:column sortBy="#{_comment.date}" width="12%">
+                <f:facet name="header">When</f:facet>
+                <h:outputText value="#{_comment.date}">
+                </h:outputText>
+            </p:column>
+            <p:column sortBy="#{_comment.text}">
+                <f:facet name="header">Text</f:facet>
+                <h:outputLink
+                      value="/Comment.web">
+                    <f:param name="commentId"
+                            value="#{_comment.id}"/>
+                    <f:param name="commentFrom" value="Person"/>
+                    #{_comment.text}
+                </h:outputLink>
+            </p:column>
+        </p:dataTable>
+
+    </h:form>
+    </p:tab>
+
+	</p:tabView>
+</ui:define>
+
+</ui:composition>

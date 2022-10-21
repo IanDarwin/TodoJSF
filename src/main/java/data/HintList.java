@@ -7,56 +7,45 @@ import java.util.Random;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Named;
-import javax.persistence.*;
+
+import org.apache.deltaspike.data.api.AbstractEntityRepository;
+import org.apache.deltaspike.data.api.Query;
+import org.apache.deltaspike.data.api.Repository;
 
 import com.darwinsys.todo.model.Hint;
 
 /**
  * This is a basic DAO-like interface for use by JSF or EJB.
- * There's one method and we need EntityManager so forget DeltaSpike Data.
+ * Methods are implemented for us by Apache DeltaSpike Data.
+ * The methods in the inherited interface suffice for many apps!
  * @author Ian Darwin
  */
 @Named("hintList") @Default
 @SessionScoped
-public class HintList implements Serializable {
+@Repository 
+public abstract class HintList extends AbstractEntityRepository<Hint, Long> {
 
-	@PersistenceContext
-	EntityManager em;
 
-	private Random r = new Random();
-
-	/**
-	 * Interface of this is based on DeltaSpike Data listers.
-	 * Implementation is trivial JPA call.
-	 */
-	public List<Hint> findAll() {
-		System.out.println("HintList.findAll()");
-		return em.createQuery("from Hint", Hint.class).getResultList();
-	}
+	static Random r = new Random();
 
 	/**
 	 * Meant to be useful on Todo pages: print one randomly-chosen Hint.
 	 */
 	public Hint getRandom() {
-		long count =
-			em.createQuery("select count(h) from Hint h", Long.class)
-			.getSingleResult();
-
+		List<Hint> hints = findAll();
+		long count = hints.size();
 		if (count == 0) {
 			System.err.println("No hints in database");
 			Hint h = new Hint();
 			h.setHint("A stitch in time saves nine");
 			return h;
 		} else {
-			System.out.printf("Found %d Hint(s)%n", count);
+			System.out.printf("There are %d Hint(s)%n", count);
 		}
 		int index = r.nextInt((int)count); // JPA starts at 1
 
 		System.out.printf("Index = %d%n", index);
 
-		return em.createQuery("select h from Hint h", Hint.class)
-			.setFirstResult(index)
-			.setMaxResults(1)
-			.getSingleResult();
+		return hints.get(index);
 	}
 }

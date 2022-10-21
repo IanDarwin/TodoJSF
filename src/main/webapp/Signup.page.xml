@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages https://rejmi.net/javaee/seamconv/pages-2.1.xsd"
+	login-required='false'>
+
+	<restrict message="You cannot sign up while you're already logged in!">
+		#{identity.loggedInUser == null}
+	</restrict>
+
+	<navigation from-action="#{signupAction.persist}">
+		<rule>	<!-- "match any non-null outcome": SIA 3.3.2 -->
+			<end-conversation />
+			<redirect view-id="/home.xhtml">
+				<message severity="INFO">
+					A confirmation email with your password has been sent to your email address.
+					If it doesn't arrive within a few hours, you can use the Password Reset mechanism
+					at the bottom of the login page.
+				</message>
+			</redirect>
+		</rule>
+	</navigation>
+
+</page>

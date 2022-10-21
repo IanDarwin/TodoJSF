@@ -11,6 +11,7 @@
 		<class>com.darwinsys.todo.model.Hint</class>
 		<class>com.darwinsys.todo.model.Project</class>
 		<class>com.darwinsys.todo.model.Task</class>
+		<class>model.Person</class>
 
 		<properties>
 			<!-- Properties for type of database -->

@@ -49,7 +49,7 @@ public class WellFormedXmlTest {
 	 * Give up the list of files to test.
 	 * @Return a List of Object[] the first of each of which is a File[] for a page to test
 	 */
-	@Parameters
+	@Parameters(name="{0}")
 	public static List<Object[]> findFiles() {
 		List<File> allFiles = new ArrayList<>(100);
 		doDir(new File(VIEW_DIR), allFiles);
