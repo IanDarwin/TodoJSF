@@ -1,9 +1,13 @@
 = TodoService - World's least awesome JSF Web View TODO
 
-This will be a nice working TODO app by 2022..
+This will be a nice working TODO app by 2029..
 For now it provides a trivial ToDo lister/editor for one person via HTML (JSF).
 
-It provides a REST interface, which will be awesome enough
+It is in the process of gaining a "signup" capability, but for now it will
+be limited by use of a "signup PIN", intended for e.g., classroom use where
+a batch of students need to sign up for developing apps that use the REST service.
+
+TodoMore provides a REST interface, which will be awesome enough
 that there will also be an Android Synch Service to go with it.
 
 Uses ../TodoModel for its JPA Data; do mvn install in that project first.

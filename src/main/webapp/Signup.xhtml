@@ -63,6 +63,19 @@
 				</p:inputText>
 				<h:message id="userNameMessage" for="userName"/>
 
+			<p:outputLabel for="signupPIN" value="Group Signup PIN"/>
+			<p:inputText id="signupPIN"
+						 required="true"
+						 validate="true"
+						 size="12"
+						 maxlength="12"
+						 value="#{signupAction.signupPIN}">
+				<p:ajax
+						listener="#{signupAction.verifySignupPin()}"
+						event="blur" update="signupPINMessage"/>
+			</p:inputText>
+			<h:message id="signupPINMessage" for="userName"/>
+
 				<p:outputLabel for="email" value="Email"/>
 				<p:inputText id="email" prototype="user@host.domain"
 					 required="true"

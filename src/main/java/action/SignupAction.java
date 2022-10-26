@@ -33,6 +33,7 @@ public class SignupAction implements Serializable {
 	private String lastName;
 	private String email;
 	private String userName;
+	private String signupPIN;
 	
 	private static final String[][] BLOCKED_EMAILS = {
 		// row[0] Email in full  row[1] Accompanying snarky message
@@ -103,6 +104,18 @@ public class SignupAction implements Serializable {
 		}
 	}
 
+	public void verifySignupPIN() {
+		final String signupPIN = getSignupPIN().trim();
+		logger.info("SignupAction.verifyUsernameIsAvailable: userName=" + signupPIN);
+		if (signupPIN == null || signupPIN.length() == 0)
+			return;	// Ignore; JSF validator will handle
+		if (signupPIN != "689123") {
+			JsfUtil.addMessage("signupPIN",
+					"Signup PIN is not valid. Sorry.");
+			System.out.println("SignupAction.verifySignupPIN(): FAIL");
+		}
+	}
+
 	/** ActionListener for the email field */
 	public void verifyEmailIsAvailable() {
 		final String requestedEmail = getEmail().trim();
@@ -151,6 +164,14 @@ public class SignupAction implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getSignupPIN() {
+		return signupPIN;
+	}
+
+	public void setSignupPIN(String signupPIN) {
+		this.signupPIN = signupPIN;
 	}
 
 	public String getFirstName() {
